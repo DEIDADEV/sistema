@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html xmlns:th="https://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
 <!-- Meta tags Obrigatórias -->
@@ -13,15 +14,11 @@
 	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
 	crossorigin="anonymous">
 
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" />
-
 <title>Olá, mundo!</title>
+</head>
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-</head>
 
 <body>
 
@@ -54,39 +51,28 @@
 
 	<div class="container">
 
-		<table class="table" id="tabela">
-			<thead>
-				<tr>
+		<form action="/salvarCidade" th:object="${cidade}" method="POST">
+			<div class="form-group">
 
-					<td>ID</td>
-					<td>Nome</td>
-					<td>Sigla</td>
-					<td>Ação</td>
+				<label for="id">ID:</label> <input type="text" readonly="true"
+					class="form-control" id="id" th:field="*{id}"> <label>Nome
+					Cidade:</label> <input type="text" required="true" class="form-control"
+					id="nome" th:field="*{nome}"> <label>CEP:</label> <input
+					type="text" required="true" class="form-control" id="cep"
+					th:field="*{cep}"> <label>Estado:</label> <select
+					th:field="*{estado}" class="form-control">
+					<option th:each="est : ${listaEstados}" th:value="${est.id}"
+						th:text="${est.nome}"></option>
+				</select>
 
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr th:each="estado: ${listaEstados}">
-					<td th:text="${estado.id}"></td>
-					<td th:text="${estado.nome}"></td>
-					<td th:text="${estado.sigla}"></td>
-					<td colspan="2"><a
-						th:href="@{/editarEstado/{id}(id=${estado.id})}"><i
-							class="fa-solid fa-pen-to-square" style="color: #3600fa;"></i></a> <a
-						th:href="@{/removerEstado/{id}(id=${estado.id})}"><i
-							class="fa-solid fa-trash" style="color: #ff5900;"></i></a></td>
-
-
-				</tr>
-			</tbody>
-
-		</table>
-
-		<a class="btn btn-danger" href="/administrativo"><i
-			class="fa-solid fa-share"></i> Voltar</a> <a class="btn btn-primary"
-			href="/cadastroEstado"><i class="fa-solid fa-plus"></i> Cadastrar</a>
-
+			</div>
+			<button type="submit" class="btn btn-primary">
+				<i class="fa-solid fa-floppy-disk"></i> Salvar
+			</button>
+			<a class="btn btn-danger" href="/administrativo"><i
+				class="fa-solid fa-share"></i> Voltar</a> <a class="btn btn-success"
+				href="/listarCidade"><i class="fa-solid fa-list"></i> Listar</a>
+		</form>
 
 	</div>
 
@@ -103,25 +89,17 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
-		integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
-		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-	<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
-	
-	<script>
-		$(document).ready( function () {
-		    $('#tabela').DataTable();
-		} );
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+		integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		
-		var table = new DataTable('#tabela', {
-		    language: {
-		        url: '//cdn.datatables.net/plug-ins/2.3.2/i18n/pt-BR.json',
-		    },
-		});
-	</script>
-	
+		<script>
+		$(document).ready(function(){
+			  $('#cep').mask('99.999-999');
+			  });
+		</script>
 </body>
 
 </html>
